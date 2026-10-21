@@ -12,8 +12,9 @@ on:
 
 jobs:
   claude:
-    uses: takudev-works/dev-config/.github/workflows/reusable-claude.yml@a61714f9ffb11fad8f90307ca3cd1ae31c82e2be # v5.6.0
-    secrets: inherit
+    uses: takudev-works/dev-config/.github/workflows/reusable-claude.yml@f198e5817b64f02f7aff2c516cac86ff6096e1d4 # v5.8.0
+    secrets:
+      ORG_CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.ORG_CLAUDE_CODE_OAUTH_TOKEN }}
     permissions:
       contents: write
       pull-requests: write
