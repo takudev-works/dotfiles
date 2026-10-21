@@ -1,28 +1,28 @@
 [tools]
 # 言語
-python = "3.11.4"
-node = "24.11.1"
-go = "1.27.1"
-ruby = "4.0.0"
+python = "3.15.0"
+node = "24.22.0"
+go = "1.27.2"
+ruby = "4.0.7"
 rust = "1.99.0"
-deno = "2.7.14"
+deno = "2.9.7"
 
 # パッケージマネージャ
-pnpm = "12.11.2"
+pnpm = "12.13.0"
 yarn = "1.22.19"
-bun = "1.4.2"
+bun = "1.4.3"
 uv = "0.13.1"
 
 # クラウド
-awscli = "2.38.0"
+awscli = "2.38.1"
 gcloud = "589.0.0"
-terraform = "1.16.5"
-terragrunt = "1.0.7"
-firebase = "15.19.0"
-hasura-cli = "2.48.4"
+terraform = "1.16.6"
+terragrunt = "1.1.6"
+firebase = "15.33.0"
+hasura-cli = "2.51.0"
 
 # 開発
-direnv = "2.37.1"
+direnv = "2.38.2"
 
 [settings]
 legacy_version_file = true
