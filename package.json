@@ -11,7 +11,7 @@
     "validate:text": "textlint --config node_modules/dev-config/src/textlintrc.json --ignore-path node_modules/dev-config/src/textlintignore \"**/*.md\""
   },
   "devDependencies": {
-    "dev-config": "github:takudev-works/dev-config#v5.1.0"
+    "dev-config": "github:takudev-works/dev-config#v5.6.0"
   },
   "prettier": "dev-config/src/prettierrc.json"
 }
