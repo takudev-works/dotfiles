@@ -90,6 +90,7 @@
     "SAVEHIST",
     "screencapture",
     "setw",
+    "shellcheck",
     "shellenv",
     "Showi",
     "sidebarlists",
