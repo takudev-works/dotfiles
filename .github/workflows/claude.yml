@@ -12,7 +12,7 @@ on:
 
 jobs:
   claude:
-    uses: takudev-works/dev-config/.github/workflows/reusable-claude.yml@3576945a828a6a2135d14304696b8a0269337de7 # v5.1.0
+    uses: takudev-works/dev-config/.github/workflows/reusable-claude.yml@a61714f9ffb11fad8f90307ca3cd1ae31c82e2be # v5.6.0
     secrets: inherit
     permissions:
       contents: write
