@@ -46,6 +46,8 @@ setup_homebrew() {
     else
       echo "$shell_env" >>~/.zprofile
     fi
+    # ~ を $HOME にしないのは、展開しないで ~ のまま表示するため
+    # shellcheck disable=SC2088
     log "~/.zprofile の Homebrew の環境設定を更新しました"
     eval "$($brew_path shellenv)"
   fi
