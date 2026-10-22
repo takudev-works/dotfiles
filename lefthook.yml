@@ -10,7 +10,7 @@ pre-commit:
   commands:
     markdownlint:
       glob: '**/*.md'
-      run: bun dev-config markdownlint {staged_files}
+      run: bun markdownlint-cli2 {staged_files}
     textlint:
       glob: '**/*.md'
       run: bun dev-config textlint {staged_files}

@@ -5,7 +5,7 @@
     "": {
       "name": "dotfiles",
       "devDependencies": {
-        "dev-config": "github:takudev-works/dev-config#v6.1.0",
+        "dev-config": "github:takudev-works/dev-config#v6.2.0",
       },
     },
   },
@@ -590,7 +590,7 @@
 
     "detect-libc": ["detect-libc@2.1.2", "", {}, "sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ=="],
 
-    "dev-config": ["dev-config@github:takudev-works/dev-config#87bd4bd", { "dependencies": { "@commitlint/cli": "^21.2.3", "@commitlint/config-conventional": "^21.2.3", "@eslint/js": "^10.0.1", "@secretlint/secretlint-rule-preset-recommend": "^13.0.7", "@vitest/coverage-v8": "5.0.4", "cspell": "^10.4.0", "eslint": "^10.12.0", "eslint-config-prettier": "^10.1.8", "markdownlint-cli2": "^0.23.3", "npm-package-json-lint": "^11.0.0", "npm-run-all2": "^9.0.3", "prettier": "^3.9.10", "secretlint": "^13.0.7", "textlint": "^15.8.0", "textlint-rule-preset-ja-technical-writing": "^12.0.2", "textlint-rule-prh": "^6.1.1", "typescript": "^6.0.3", "typescript-eslint": "^8.71.2", "vitest": "5.0.4" }, "bin": { "dev-config": "dist/cli.mjs" } }, "takudev-works-dev-config-87bd4bd", "sha512-OxspzyprA80hCb1oz/TRCjZLqfaetW5TmXWNYIBl8EHtSnCx8g6lfnELVteQwYQq+5ODBNxVKyR0DktVL81gxg=="],
+    "dev-config": ["dev-config@github:takudev-works/dev-config#ac1a608", { "dependencies": { "@commitlint/cli": "^21.2.3", "@commitlint/config-conventional": "^21.2.3", "@eslint/js": "^10.0.1", "@secretlint/secretlint-rule-preset-recommend": "^13.0.7", "@vitest/coverage-v8": "5.0.4", "cspell": "^10.4.0", "eslint": "^10.12.0", "eslint-config-prettier": "^10.1.8", "markdownlint-cli2": "^0.23.3", "npm-package-json-lint": "^11.0.0", "npm-run-all2": "^9.0.3", "prettier": "^3.9.10", "secretlint": "^13.0.7", "textlint": "^15.8.0", "textlint-rule-preset-ja-technical-writing": "^12.0.2", "textlint-rule-prh": "^6.1.1", "typescript": "^6.0.3", "typescript-eslint": "^8.71.2", "vitest": "5.0.4" }, "bin": { "dev-config": "dist/cli.mjs" } }, "takudev-works-dev-config-ac1a608", "sha512-WJRGqHX4ds6pSdAffhgILoboILuy4C/Jrh7Sz/RNn5SqN30pivcqXXX/kPnsjieGl+mfzT3XaI92xUmiCyDVLQ=="],
 
     "devlop": ["devlop@1.1.0", "", { "dependencies": { "dequal": "^2.0.0" } }, "sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA=="],
 

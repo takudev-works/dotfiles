@@ -4,14 +4,14 @@
   "scripts": {
     "validate": "run-p validate:*",
     "validate:format": "prettier --check .",
-    "validate:markdown": "dev-config markdownlint \"**/*.md\"",
+    "validate:markdown": "markdownlint-cli2 \"**/*.md\"",
     "validate:package-json": "dev-config npm-package-json-lint \"**/package.json\"",
     "validate:secrets": "dev-config secretlint \"**/*\"",
     "validate:spell": "cspell --no-progress \"**\"",
     "validate:text": "dev-config textlint \"**/*.md\""
   },
   "devDependencies": {
-    "dev-config": "github:takudev-works/dev-config#v6.1.0"
+    "dev-config": "github:takudev-works/dev-config#v6.2.0"
   },
   "prettier": "dev-config/dist/prettierrc.json"
 }
