@@ -58,7 +58,7 @@ fi
 # ===========================
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/takuya-iwashiro/.docker/completions $fpath)
+fpath=($HOME/.docker/completions $fpath)
 # End of Docker CLI completions
 
 autoload -Uz compinit
@@ -275,8 +275,6 @@ alias ugr='update_git_repos'
 function expo-config() {
   APP_ENV="$1" npx expo config --type public
 }
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

@@ -121,8 +121,5 @@
   "preferredNotifChannel": "terminal_bell",
   "switchModelsOnFlag": false,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754036935734
-  }
+  "agentPushNotifEnabled": true
 }
