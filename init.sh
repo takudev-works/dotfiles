@@ -3,14 +3,7 @@
 set -euo pipefail
 
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-if command -v source >/dev/null 2>&1; then
-  SOURCE_CMD="source"
-else
-  SOURCE_CMD="."
-fi
-
-$SOURCE_CMD "${THIS_DIR}/utils.sh"
+source "$THIS_DIR/utils.sh"
 
 main() {
   log "セットアップを始めます"

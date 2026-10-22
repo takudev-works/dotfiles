@@ -3,36 +3,6 @@
 set -euo pipefail
 
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$THIS_DIR/../../utils.sh"
 
-if command -v source >/dev/null 2>&1; then
-  SOURCE_CMD="source"
-else
-  SOURCE_CMD="."
-fi
-
-$SOURCE_CMD "${THIS_DIR}/../../utils.sh"
-
-DOTFILES=(.gitconfig .gitignore_global .czrc)
-
-check_requirements() {
-  for file in "${DOTFILES[@]}"; do
-    if [ ! -f "$THIS_DIR/$file" ]; then
-      log "エラー: $THIS_DIR に $file がありません"
-      return 1
-    fi
-  done
-}
-
-install_dotfiles() {
-  for file in "${DOTFILES[@]}"; do
-    ln -snfv "$THIS_DIR/$file" "$HOME/$file"
-  done
-  log "git の設定をホームディレクトリにリンクしました"
-}
-
-main() {
-  check_requirements || exit 1
-  install_dotfiles || exit 1
-}
-
-main
+link_files "$THIS_DIR" "$HOME" .gitconfig .gitignore_global .czrc

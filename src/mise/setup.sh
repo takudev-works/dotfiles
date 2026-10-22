@@ -3,43 +3,12 @@
 set -euo pipefail
 
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$THIS_DIR/../../utils.sh"
 
-if command -v source >/dev/null 2>&1; then
-  SOURCE_CMD="source"
-else
-  SOURCE_CMD="."
+if ! command -v mise >/dev/null 2>&1; then
+  log "エラー: mise が入っていません"
+  exit 1
 fi
 
-$SOURCE_CMD "${THIS_DIR}/../../utils.sh"
-
-check_requirements() {
-  if ! command -v mise >/dev/null 2>&1; then
-    log "エラー: mise が入っていません"
-    return 1
-  fi
-
-  if [ ! -f "$THIS_DIR/config.toml" ]; then
-    log "エラー: config.toml がありません"
-    return 1
-  fi
-}
-
-create_symlinks() {
-  mkdir -p "$HOME/.config/mise"
-  ln -sf "$THIS_DIR/config.toml" "$HOME/.config/mise/config.toml"
-}
-
-install_all() {
-  mise install || {
-    log "エラー: mise でツールを入れられませんでした"
-    return 1
-  }
-}
-
-main() {
-  check_requirements || exit 1
-  create_symlinks || exit 1
-  install_all || exit 1
-}
-
-main
+link_files "$THIS_DIR" "$HOME/.config/mise" config.toml
+mise install
