@@ -105,7 +105,7 @@ configure_controlcenter() {
   defaults write com.apple.controlcenter "NSStatusItem VisibleCC Clock" -bool true   # 時計: コントロールセンターに表示
   defaults write com.apple.controlcenter BatteryShowPercentage -bool true            # バッテリー残量をパーセントで表示
 
-  killall ControlCenter
+  restart_appControlCenter
 
   log "コントロールセンターを設定しました"
 }
@@ -172,8 +172,8 @@ configure_dock_desktop() {
   defaults write com.apple.dock wvous-br-corner -int 14  # 右下: クイックメモ
 
   # 設定を適用
-  killall Dock
-  killall Finder
+  restart_appDock
+  restart_appFinder
 
   log "Dock とデスクトップを設定しました"
 }
@@ -186,7 +186,7 @@ configure_notifications() {
   defaults write com.apple.notificationcenterui screenSharingDoNotDisturb -bool true    # 画面ミラーリングまたは共有時の通知を許可しない
   defaults write com.apple.notificationcenterui iPhoneNotificationForwarding -bool true # iPhone からの通知を許可
 
-  killall NotificationCenter
+  restart_appNotificationCenter
 
   log "通知を設定しました"
 }
@@ -208,7 +208,7 @@ configure_focus() {
   defaults write com.apple.ncprefs.plist focusMode -dict-add "shareAcrossDevices" -bool true # フォーカスモードをデバイス間で共有する
   defaults write com.apple.ncprefs.plist focusMode -dict-add "focusStatus" -bool true        # フォーカスステータスをアプリと共有する
 
-  killall NotificationCenter
+  restart_appNotificationCenter
 
   log "集中モードを設定しました"
 }
@@ -411,7 +411,7 @@ configure_finder() {
 
   # Finder を再起動（変更を反映）
   sleep 1
-  killall Finder
+  restart_appFinder
 
   log "Finderを設定しました"
 }

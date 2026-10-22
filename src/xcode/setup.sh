@@ -24,8 +24,8 @@ install_xcode_command_line_tools() {
     log "Xcode Command Line Tools を入れます"
     xcode-select --install
     log "表示されたダイアログでインストールを終えてください"
-    log "インストールが終わったら、このスクリプトをもう一度実行してください"
-    exit 0
+    log "インストールが終わったら、init.sh をもう一度実行してください"
+    exit 1
   else
     log "Xcode Command Line Tools は入っています"
   fi
