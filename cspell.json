@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
-  "import": ["./node_modules/dev-config/src/cspell.json", "./src/cspell/cspell.json"],
+  "import": ["./node_modules/dev-config/dist/cspell.json", "./src/cspell/cspell.json"],
   "words": [
     "AMPM",
     "apdisk",
@@ -90,7 +90,6 @@
     "SAVEHIST",
     "screencapture",
     "setw",
-    "shellcheck",
     "shellenv",
     "Showi",
     "sidebarlists",

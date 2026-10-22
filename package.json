@@ -4,14 +4,14 @@
   "scripts": {
     "validate": "run-p validate:*",
     "validate:format": "prettier --check .",
-    "validate:markdown": "markdownlint-cli2 --config node_modules/dev-config/src/markdownlint-cli2.jsonc \"**/*.md\"",
-    "validate:package-json": "npmPkgJsonLint --configFile node_modules/dev-config/src/npmpackagejsonlintrc.json \"**/package.json\"",
-    "validate:secrets": "secretlint --secretlintrc node_modules/dev-config/src/secretlintrc.json --secretlintignore node_modules/dev-config/src/secretlintignore \"**/*\"",
+    "validate:markdown": "markdownlint-cli2 \"**/*.md\"",
+    "validate:package-json": "dev-config npm-package-json-lint \"**/package.json\"",
+    "validate:secrets": "dev-config secretlint \"**/*\"",
     "validate:spell": "cspell --no-progress \"**\"",
-    "validate:text": "textlint --config node_modules/dev-config/src/textlintrc.json --ignore-path node_modules/dev-config/src/textlintignore \"**/*.md\""
+    "validate:text": "dev-config textlint \"**/*.md\""
   },
   "devDependencies": {
-    "dev-config": "github:takudev-works/dev-config#v5.8.0"
+    "dev-config": "github:takudev-works/dev-config#v6.2.0"
   },
-  "prettier": "dev-config/src/prettierrc.json"
+  "prettier": "dev-config/dist/prettierrc.json"
 }
