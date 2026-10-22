@@ -91,8 +91,6 @@ configure_controlcenter() {
   defaults write com.apple.controlcenter "NSStatusItem VisibleCC Clock" -bool true   # 時計: コントロールセンターに表示
   defaults write com.apple.controlcenter BatteryShowPercentage -bool true            # バッテリー残量をパーセントで表示
 
-  restart_app ControlCenter
-
   log "コントロールセンターを設定しました"
 }
 
@@ -157,10 +155,6 @@ configure_dock_desktop() {
   defaults write com.apple.dock wvous-tl-modifier -int 0 # 左上: 修飾キーなし
   defaults write com.apple.dock wvous-br-corner -int 14  # 右下: クイックメモ
 
-  # 設定を適用
-  restart_app Dock
-  restart_app Finder
-
   log "Dock とデスクトップを設定しました"
 }
 
@@ -171,8 +165,6 @@ configure_notifications() {
   defaults write com.apple.notificationcenterui doNotDisturb -bool true                 # ディスプレイがスリープ中でも通知を許可しない
   defaults write com.apple.notificationcenterui screenSharingDoNotDisturb -bool true    # 画面ミラーリングまたは共有時の通知を許可しない
   defaults write com.apple.notificationcenterui iPhoneNotificationForwarding -bool true # iPhone からの通知を許可
-
-  restart_app NotificationCenter
 
   log "通知を設定しました"
 }
@@ -191,10 +183,8 @@ configure_sound() {
 configure_focus() {
   log "集中モードを設定します"
 
-  defaults write com.apple.ncprefs.plist focusMode -dict-add "shareAcrossDevices" -bool true # フォーカスモードをデバイス間で共有する
-  defaults write com.apple.ncprefs.plist focusMode -dict-add "focusStatus" -bool true        # フォーカスステータスをアプリと共有する
-
-  restart_app NotificationCenter
+  defaults write com.apple.ncprefs focusMode -dict-add "shareAcrossDevices" -bool true # フォーカスモードをデバイス間で共有する
+  defaults write com.apple.ncprefs focusMode -dict-add "focusStatus" -bool true        # フォーカスステータスをアプリと共有する
 
   log "集中モードを設定しました"
 }
@@ -205,8 +195,6 @@ configure_lock_screen() {
   defaults -currentHost write com.apple.screensaver idleTime -int 180 # スクリーンセーバーの開始時間（3 分）
   sudo pmset -b displaysleep 5                                        # バッテリー使用時のディスプレイオフ時間（5 分）
   sudo pmset -c displaysleep 5                                        # 電源接続時のディスプレイオフ時間（5 分）
-  defaults write com.apple.screensaver askForPassword -int 1          # スクリーンセーバーやディスプレイオフ後のパスワード要求を即時に設定
-  defaults write com.apple.screensaver askForPasswordDelay -int 0
 
   # ロック画面の表示オプション
   defaults write com.apple.menuextra.clock IsAnalog -bool false                           # デジタル時計を表示
@@ -283,7 +271,7 @@ configure_trackpad() {
   defaults write com.apple.AppleMultitouchTrackpad FirstClickThreshold -int 1                                         # クリック強度（0=軽い, 1=中, 2=強い）
   defaults write com.apple.AppleMultitouchTrackpad SecondClickThreshold -int 1                                        # クリック強度（0=軽い, 1=中, 2=強い）
   defaults write com.apple.AppleMultitouchTrackpad ActuationStrength -int 0                                           # 静音クリック（Quiet Click）を有効化
-  defaults write com.apple.AppleMultitouchTrackpad ForceSuppressed -bool true                                         # 強めのクリックと触覚フィードバックを有効化
+  defaults write com.apple.AppleMultitouchTrackpad ForceSuppressed -bool true                                         # 強めのクリックと触覚フィードバックを無効化
   defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerTapGesture -int 0                               # ルックアップ & データ検出をオフ
   defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true                                      # 副ボタンのクリック（2 本指でクリック）
   defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true                     # 副ボタンのクリック（2 本指でクリック）
@@ -297,8 +285,8 @@ configure_trackpad() {
   defaults write com.apple.AppleMultitouchTrackpad TrackpadRotate -bool true                                          # 2 本指で回転
   defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRotate -bool true                         # 2 本指で回転
   defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true                                        # ページ間スワイプ（2 本指で左右）
-  defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGesture -int 1                        # ページ間スワイプ（2 本指で左右）
-  defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 1       # ページ間スワイプ（2 本指で左右）
+  defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGesture -int 1                        # ページ間スワイプ（3 本指で左右）
+  defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 1       # ページ間スワイプ（3 本指で左右）
   defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerHorizSwipeGesture -int 2                         # フルスクリーンアプリの切り替え（4 本指で左右）
   defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerHorizSwipeGesture -int 2        # フルスクリーンアプリの切り替え（4 本指で左右）
   defaults write com.apple.AppleMultitouchTrackpad TrackpadTwoFingerFromRightEdgeSwipeGesture -int 1                  # 通知センター（2 本指で右端からスワイプ）
@@ -317,7 +305,6 @@ configure_mouse() {
   log "マウスを設定します"
 
   defaults write NSGlobalDomain com.apple.mouse.scaling -float 1.5                                   # マウスのトラッキング速度（トラックパッド側は configure_trackpad で設定）
-  defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true                            # ナチュラルスクロール（オン）
   defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string "TwoButton" # 副ボタンクリック（右クリックを有効化）
   defaults write NSGlobalDomain com.apple.mouse.doubleClickThreshold -float 0.75                     # ダブルクリックの速度（最速に近い設定）
   defaults write NSGlobalDomain com.apple.scrollwheel.scaling -float 0.75                            # スクロール速度（中程度に設定）
@@ -365,7 +352,7 @@ configure_finder() {
 
   # Finder ウィンドウのデフォルトフォルダ（カスタムパス）
   defaults write com.apple.finder NewWindowTarget -string "PfLo"
-  defaults write com.apple.finder NewWindowTargetPath -string "file:///Users/$(whoami)/"
+  defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/"
 
   # 検索時のデフォルト動作（Mac 全体を検索）
   defaults write com.apple.finder FXDefaultSearchScope -string "SCev"
@@ -394,10 +381,6 @@ configure_finder() {
     ShowBonjour -bool true \
     ShowConnectedServers -bool true \
     ShowRecentTags -bool true
-
-  # Finder を再起動（変更を反映）
-  sleep 1
-  restart_app Finder
 
   log "Finderを設定しました"
 }
@@ -428,6 +411,12 @@ main() {
     "$step"
     echo ""
   done
+
+  sleep 1
+  restart_app ControlCenter
+  restart_app Dock
+  restart_app Finder
+  restart_app NotificationCenter
 }
 
 main

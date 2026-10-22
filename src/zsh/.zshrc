@@ -19,31 +19,6 @@ export DIRSTACKSIZE=100
 # PATH
 typeset -U path PATH
 
-# Homebrew の場所は OS と CPU で変わる
-if [[ "$(uname)" == "Darwin" ]]; then
-  if [[ "$(uname -m)" == "arm64" ]]; then
-    path=(
-      /opt/homebrew/bin
-      /opt/homebrew/sbin
-      /usr/local/bin
-      $path
-    )
-    export HOMEBREW_PREFIX="/opt/homebrew"
-  else
-    path=(
-      /usr/local/bin
-      /usr/local/sbin
-      $path
-    )
-    export HOMEBREW_PREFIX="/usr/local"
-  fi
-else
-  if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
-  fi
-fi
-
 # Android の開発
 export ANDROID_HOME=$HOME/Library/Android/sdk
 path=(
@@ -64,7 +39,6 @@ export AWS_PROFILE="default"
 # zsh のオプション
 # ===========================
 
-setopt hist_ignore_dups     # 直前のコマンドの重複を削除
 setopt hist_ignore_all_dups # 同じコマンドをヒストリに残さない
 setopt share_history        # 同時に起動したzshの間でヒストリを共有
 setopt correct              # コマンドのスペルを訂正
@@ -82,6 +56,10 @@ fi
 # ===========================
 # プラグインとツール
 # ===========================
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/takuya-iwashiro/.docker/completions $fpath)
+# End of Docker CLI completions
 
 autoload -Uz compinit
 compinit
@@ -155,7 +133,6 @@ alias gm='brew update && brew upgrade && brew cleanup && brew autoremove && brew
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias saml2awssetup="bash -c 'read -sp \"ClientID: \" client_id && echo && read -sp \"ClientSecret: \" client_secret && echo && saml2aws configure --client-id=\$client_id --client-secret=\$client_secret'"
 alias saml2awslogin='saml2aws login --session-duration 14400 --force --skip-prompt --browser-type=chrome'
-alias awsprofile='aws --profile default sts get-caller-identity'
 
 # AI
 alias c='~/.local/bin/claude'
@@ -300,12 +277,6 @@ function expo-config() {
 }
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
-
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/takuya-iwashiro/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
