@@ -4,8 +4,8 @@ set -euo pipefail
 
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
 DEV_CONFIG_DIR="$THIS_DIR/../../node_modules/dev-config"
-SOURCE_FILE="dist/markdownlint-cli2.jsonc"
-TARGET_FILE="markdownlint-cli2.jsonc"
+SOURCE_FILE="dist/markdownlint-cli2.mjs"
+TARGET_FILE="markdownlint-cli2.mjs"
 TARGET_DIR="$HOME/.config/markdownlint"
 
 if command -v source >/dev/null 2>&1; then
