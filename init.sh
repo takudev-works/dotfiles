@@ -15,10 +15,10 @@ $SOURCE_CMD "${THIS_DIR}/utils.sh"
 main() {
   log "セットアップを始めます"
 
-  run_setup "mac"
   run_setup "fonts"
   run_setup "xcode"
   run_setup "homebrew"
+  run_setup "mac"
   run_setup "git"
   run_setup "tmux"
   run_setup "mise"

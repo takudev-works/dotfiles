@@ -20,37 +20,15 @@ setup_homebrew() {
     log "Homebrew は入っています"
   fi
 
-  if command -v brew >/dev/null 2>&1; then
-    local brew_path
-    if [[ "$(uname -m)" == "arm64" ]]; then
-      brew_path="/opt/homebrew/bin/brew"
-      log "Apple Silicon 向けに環境を設定します"
-    else
-      brew_path="/usr/local/bin/brew"
-      log "Intel Mac 向けに環境を設定します"
-    fi
-
-    local shell_env="eval \"\$(${brew_path} shellenv)\""
-    touch ~/.zprofile
-
-    if grep -q "eval.*brew shellenv" ~/.zprofile; then
-      (
-        tmp_file=$(mktemp)
-        trap 'rm -f "$tmp_file"' EXIT
-
-        awk '
-          /eval.*brew shellenv/ { if (!seen) print; seen=1; next }
-          { print }
-        ' ~/.zprofile >"$tmp_file" && mv "$tmp_file" ~/.zprofile
-      )
-    else
-      echo "$shell_env" >>~/.zprofile
-    fi
-    # ~ を $HOME にしないのは、展開しないで ~ のまま表示するため
-    # shellcheck disable=SC2088
-    log "~/.zprofile の Homebrew の環境設定を更新しました"
-    eval "$($brew_path shellenv)"
+  local brew_path
+  if [[ "$(uname -m)" == "arm64" ]]; then
+    brew_path="/opt/homebrew/bin/brew"
+  else
+    brew_path="/usr/local/bin/brew"
   fi
+
+  # ~/.zprofile に書き足さないのは、src/zsh/.zprofile へのリンクで、brew shellenv はそちらに書いてあるため
+  eval "$($brew_path shellenv)"
 }
 
 setup_rosetta() {
@@ -80,7 +58,9 @@ validate_brewfile() {
 
 maintenance() {
   log "brew doctor を実行します"
-  brew doctor
+  if ! brew doctor; then
+    log "警告: brew doctor が問題を見つけました"
+  fi
 
   log "更新を確かめます"
   brew update
@@ -102,12 +82,9 @@ maintenance() {
   brew cleanup
 
   log "Brewfile にないパッケージを確かめます"
-  local unmanaged_formulae
-  unmanaged_formulae=$(brew bundle cleanup --file="$THIS_DIR/Brewfile" --force)
-  if [ -n "$unmanaged_formulae" ]; then
-    log "警告: 次のパッケージは Brewfile にありません"
-    echo "$unmanaged_formulae"
-  fi
+  # --force を付けないのは、付けると Brewfile にないパッケージをアンインストールするため
+  # 失敗として扱わないのは、プロンプトを出せないと、消すものの一覧を出して 1 で終わるため
+  brew bundle cleanup --file="$THIS_DIR/Brewfile" </dev/null || true
 }
 
 main() {

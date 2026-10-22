@@ -71,14 +71,10 @@ template = ~/.stCommitMsg
 defaultBranch = main
 
 [merge]
-tool = code --wait
 conflictstyle = diff3
 
 [rerere]
 enabled = true
-
-[diff]
-tool = code --wait
 
 [diff "lfs"]
 textconv = git-lfs diff

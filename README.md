@@ -35,7 +35,7 @@ lint の設定は [takudev-works/dev-config](https://github.com/takudev-works/de
 3. **自動入力元** で **パスワード**（標準のアプリ）をオフにする。
 4. **自動入力元** で **1Password** をオンにする。
 
-手順 4 は、通常は `configure_autofill_passwords` が `pluginkit` で拡張機能を有効にする。ただし新しいマシンでは飛ばされる。`init.sh` は `mac` の手順を `homebrew` の手順より先に実行するので、その時点では 1Password が入っていないため。手順 4 を手で行うか、`init.sh` が終わってから `bash src/mac/setup.sh` を実行し直す。
+手順 4 は、`configure_autofill_passwords` が `pluginkit` で拡張機能を有効にする。`init.sh` は `homebrew` の手順で 1Password を入れてから `mac` の手順を実行する。拡張機能が見つからないときは、ログに「1Password の自動入力の拡張機能が無いので飛ばします」と出る。そのときは 1Password を一度起動してから `bash src/mac/setup.sh` を実行し直すか、手順 4 を手で行う。
 
 ### Gatekeeper
 

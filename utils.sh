@@ -9,6 +9,10 @@ error_handler() {
   exit 1
 }
 
+restart_app() {
+  killall "$1" 2>/dev/null || true
+}
+
 run_setup() {
   local module=$1
   local module_dir="$THIS_DIR/src/$module"
