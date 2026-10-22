@@ -3,26 +3,32 @@ glob_matcher: doublestar
 commit-msg:
   commands:
     commitlint:
-      run: bun commitlint --config node_modules/dev-config/src/commitlintrc.json --edit {1}
+      run: bun dev-config commitlint --edit {1}
 
 pre-commit:
   parallel: true
   commands:
     markdownlint:
       glob: '**/*.md'
-      run: bun markdownlint-cli2 --config node_modules/dev-config/src/markdownlint-cli2.jsonc {staged_files}
+      run: bun dev-config markdownlint {staged_files}
     textlint:
       glob: '**/*.md'
-      run: bun textlint --config node_modules/dev-config/src/textlintrc.json --ignore-path node_modules/dev-config/src/textlintignore {staged_files}
+      run: bun dev-config textlint {staged_files}
     prettier:
       run: bun prettier --check --ignore-unknown {staged_files}
     cspell:
       run: bun cspell --no-progress --no-summary --no-must-find-files {staged_files}
     secretlint:
-      run: bun secretlint --secretlintrc node_modules/dev-config/src/secretlintrc.json --secretlintignore node_modules/dev-config/src/secretlintignore {staged_files}
+      run: bun dev-config secretlint {staged_files}
     package-json:
       glob: '**/package.json'
       run: bun run validate:package-json
     shellcheck:
       glob: '**/*.{sh,bash}'
       run: shellcheck {staged_files}
+    actionlint:
+      glob: '.github/workflows/*.{yml,yaml}'
+      run: bun dev-config actionlint {staged_files}
+    zizmor:
+      glob: '.github/workflows/*.{yml,yaml}'
+      run: bun dev-config zizmor {staged_files}
