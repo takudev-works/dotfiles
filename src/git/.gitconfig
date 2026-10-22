@@ -6,8 +6,8 @@ email = takuya.iwashiro@takudev.net
 excludesfile = ~/.gitignore_global
 ignorecase = false
 quotepath = false
-	autocrlf = input
-	safecrlf = false
+autocrlf = input
+safecrlf = false
 
 [color]
 ui = auto
@@ -64,9 +64,6 @@ default = current
 [pull]
 ff = only
 
-[commit]
-template = ~/.stCommitMsg
-
 [init]
 defaultBranch = main
 
@@ -75,12 +72,3 @@ conflictstyle = diff3
 
 [rerere]
 enabled = true
-
-[diff "lfs"]
-textconv = git-lfs diff
-
-[filter "lfs"]
-required = true
-clean = git-lfs clean -- %f
-smudge = git-lfs smudge -- %f
-process = git-lfs filter-process
