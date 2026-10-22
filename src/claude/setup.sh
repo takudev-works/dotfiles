@@ -3,39 +3,6 @@
 set -euo pipefail
 
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
-CONFIG_DIR="$HOME/.claude"
+source "$THIS_DIR/../../utils.sh"
 
-if command -v source >/dev/null 2>&1; then
-  SOURCE_CMD="source"
-else
-  SOURCE_CMD="."
-fi
-
-$SOURCE_CMD "${THIS_DIR}/../../utils.sh"
-
-DOTFILES=(settings.json statusline-command.sh)
-
-check_requirements() {
-  for file in "${DOTFILES[@]}"; do
-    if [ ! -f "$THIS_DIR/$file" ]; then
-      log "エラー: $THIS_DIR に $file がありません"
-      return 1
-    fi
-  done
-
-  mkdir -p "$CONFIG_DIR"
-}
-
-install_dotfiles() {
-  for file in "${DOTFILES[@]}"; do
-    ln -snfv "$THIS_DIR/$file" "$CONFIG_DIR/$file"
-  done
-  log "Claude Code の設定を $CONFIG_DIR にリンクしました"
-}
-
-main() {
-  check_requirements || exit 1
-  install_dotfiles || exit 1
-}
-
-main
+link_files "$THIS_DIR" "$HOME/.claude" settings.json statusline-command.sh

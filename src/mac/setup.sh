@@ -3,24 +3,10 @@
 set -euo pipefail
 
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-if command -v source >/dev/null 2>&1; then
-  SOURCE_CMD="source"
-else
-  SOURCE_CMD="."
-fi
-
-$SOURCE_CMD "${THIS_DIR}/../../utils.sh"
-
-check_requirements() {
-  if [ "$(uname)" != "Darwin" ]; then
-    log "エラー: このスクリプトは macOS 専用です"
-    return 1
-  fi
-}
+source "$THIS_DIR/../../utils.sh"
 
 if [ "$(uname)" != "Darwin" ]; then
-  log "このスクリプトは macOS 専用です"
+  log "エラー: このスクリプトは macOS 専用です"
   exit 1
 fi
 
@@ -417,59 +403,31 @@ configure_finder() {
 }
 
 main() {
-  configure_sound_effects
-  echo ""
+  local steps=(
+    configure_sound_effects
+    configure_scrollbar
+    configure_appearance
+    configure_time
+    configure_battery
+    configure_screenshot
+    configure_controlcenter
+    configure_dock_desktop
+    configure_notifications
+    configure_sound
+    configure_focus
+    configure_lock_screen
+    configure_security
+    configure_autofill_passwords
+    configure_keyboard
+    configure_trackpad
+    configure_mouse
+    configure_finder
+  )
 
-  configure_scrollbar
-  echo ""
-
-  configure_appearance
-  echo ""
-
-  configure_time
-  echo ""
-
-  configure_battery
-  echo ""
-
-  configure_screenshot
-  echo ""
-
-  configure_controlcenter
-  echo ""
-
-  configure_dock_desktop
-  echo ""
-
-  configure_notifications
-  echo ""
-
-  configure_sound
-  echo ""
-
-  configure_focus
-  echo ""
-
-  configure_lock_screen
-  echo ""
-
-  configure_security
-  echo ""
-
-  configure_autofill_passwords
-  echo ""
-
-  configure_keyboard
-  echo ""
-
-  configure_trackpad
-  echo ""
-
-  configure_mouse
-  echo ""
-
-  configure_finder
-  echo ""
+  for step in "${steps[@]}"; do
+    "$step"
+    echo ""
+  done
 }
 
 main
