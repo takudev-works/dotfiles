@@ -57,6 +57,7 @@ brew 'checkov'
 
 # モバイル開発
 brew 'maestro'
+brew 'openjdk'
 brew 'watchman'
 
 # 画像と動画
@@ -110,6 +111,9 @@ cask 'xcodes-app'
 cask 'zulu'
 cask 'zulu@17'
 
+# クラウドと運用
+cask 'session-manager-plugin'
+
 # ブラウザ
 cask 'firefox@nightly'
 cask 'google-chrome'
@@ -161,3 +165,4 @@ cask 'spotify'
 # AI
 cask 'claude'
 cask 'cursor'
+cask 'google-gemini'
