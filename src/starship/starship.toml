@@ -6,6 +6,10 @@ disabled = true
 [aws.region_aliases]
 ap-northeast-1 = "jp"
 
+# starship の条件付きの括弧は中の変数が 1 つでも空でなければ出るので、$region を入れると未ログインでも出てしまう
+[gcloud]
+format = '(on [$symbol$account(@$domain)]($style) )'
+
 [memory_usage]
 disabled = false
 threshold = -1
