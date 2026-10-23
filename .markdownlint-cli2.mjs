@@ -1,1 +1,1 @@
-export { default } from 'dev-config/dist/markdownlint-cli2.mjs';
+export { default } from '@takudev-works/dev-config/dist/markdownlint-cli2.mjs';
