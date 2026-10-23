@@ -6,5 +6,5 @@ actionlint = "1.7.12"
 zizmor = "1.31.1"
 
 [tasks.setup]
-description = "Install dependencies and git hooks"
+description = "依存と git hook を入れる"
 run = ["bun install --frozen-lockfile", "lefthook install"]

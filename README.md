@@ -16,6 +16,18 @@ bash init.sh
 
 `init.sh` は `src/` の下にあるツールごとの `setup.sh` を順に実行する。1 つだけやり直すときは、その `setup.sh` を直接実行する（例: `bash src/zsh/setup.sh`）。
 
+## 開発の準備
+
+手元では次の順に実行する。`init.sh` を実行したあとなら、最初の 2 つは済んでいる。
+
+```sh
+mise install      # mise.toml の版の bun、lefthook、actionlint、zizmor、shellcheck を入れる
+mise run setup    # 依存と git hook を入れる
+bun run validate  # CI と同じ検査
+```
+
+前もって `mise` を入れておく（入れ方は https://mise.jdx.dev/getting-started.html ）。初めて使う repo では、`mise trust` で `mise.toml` を信頼してから実行する。
+
 ## 開発
 
 lint の設定は [takudev-works/dev-config](https://github.com/takudev-works/dev-config) を devDependencies として入れて使う。`init.sh` の中で `mise run setup` を実行し、dev-config と git hook を入れる。`src/markdownlint/setup.sh` は、エディタが読めるように dev-config の markdownlint の正本を `~/.config/markdownlint/markdownlint-cli2.mjs` にリンクする。`src/cspell/setup.sh` は、個人の単語の `cspell.json` を `~/.config/cspell` にリンクする。
