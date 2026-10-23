@@ -1,5 +1,5 @@
 {
-  "name": "dotfiles",
+  "name": "@takudev-works/dotfiles",
   "private": true,
   "scripts": {
     "validate": "run-p validate:*",
@@ -11,7 +11,7 @@
     "validate:text": "dev-config textlint \"**/*.md\""
   },
   "devDependencies": {
-    "dev-config": "github:takudev-works/dev-config#v6.2.0"
+    "@takudev-works/dev-config": "github:takudev-works/dev-config#v8.0.0"
   },
-  "prettier": "dev-config/dist/prettierrc.json"
+  "prettier": "@takudev-works/dev-config/dist/prettierrc.json"
 }
