@@ -247,7 +247,7 @@ function update_git_repos() {
     return 1
   fi
 
-  for dir in "$BASE_DIR"/*/; do
+  for dir in "$BASE_DIR"/*/*/; do
     if [[ -d "$dir" && -d "$dir/.git" ]]; then
       echo "Processing: $dir"
       cd "$dir" || continue
