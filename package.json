@@ -11,7 +11,7 @@
     "validate:text": "dev-config textlint \"**/*.md\""
   },
   "devDependencies": {
-    "@takudev-works/dev-config": "github:takudev-works/dev-config#v8.0.1"
+    "@takudev-works/dev-config": "github:takudev-works/dev-config#v8.2.0"
   },
   "prettier": "@takudev-works/dev-config/dist/prettierrc.json"
 }
