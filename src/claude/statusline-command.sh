@@ -40,8 +40,8 @@ fi
 ccusage_line=""
 if command -v ccusage >/dev/null 2>&1; then
   ccusage_line=$(echo "$input" | ccusage statusline 2>/dev/null || true)
-elif command -v bunx >/dev/null 2>&1; then
-  ccusage_line=$(echo "$input" | bunx ccusage statusline 2>/dev/null || true)
+elif command -v pnpm >/dev/null 2>&1; then
+  ccusage_line=$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null || true)
 elif command -v npx >/dev/null 2>&1; then
   ccusage_line=$(echo "$input" | npx ccusage statusline 2>/dev/null || true)
 fi
