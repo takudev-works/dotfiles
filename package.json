@@ -13,5 +13,6 @@
   "devDependencies": {
     "@takudev-works/dev-config": "github:takudev-works/dev-config#v8.2.0"
   },
+  "packageManager": "pnpm@12.13.0",
   "prettier": "@takudev-works/dev-config/dist/prettierrc.json"
 }

@@ -3,32 +3,32 @@ glob_matcher: doublestar
 commit-msg:
   commands:
     commitlint:
-      run: bun dev-config commitlint --edit {1}
+      run: pnpm exec dev-config commitlint --edit {1}
 
 pre-commit:
   parallel: true
   commands:
     markdownlint:
       glob: '**/*.md'
-      run: bun markdownlint-cli2 {staged_files}
+      run: pnpm exec markdownlint-cli2 {staged_files}
     textlint:
       glob: '**/*.md'
-      run: bun dev-config textlint {staged_files}
+      run: pnpm exec dev-config textlint {staged_files}
     prettier:
-      run: bun prettier --check --ignore-unknown {staged_files}
+      run: pnpm exec prettier --check --ignore-unknown {staged_files}
     cspell:
-      run: bun cspell --no-progress --no-summary --no-must-find-files {staged_files}
+      run: pnpm exec cspell --no-progress --no-summary --no-must-find-files {staged_files}
     secretlint:
-      run: bun dev-config secretlint {staged_files}
+      run: pnpm exec dev-config secretlint {staged_files}
     package-json:
       glob: '**/package.json'
-      run: bun run validate:package-json
+      run: pnpm run validate:package-json
     shellcheck:
       glob: '**/*.{sh,bash}'
       run: shellcheck {staged_files}
     actionlint:
       glob: '.github/workflows/*.{yml,yaml}'
-      run: bun dev-config actionlint {staged_files}
+      run: pnpm exec dev-config actionlint {staged_files}
     zizmor:
       glob: '.github/workflows/*.{yml,yaml}'
-      run: bun dev-config zizmor {staged_files}
+      run: pnpm exec dev-config zizmor {staged_files}
