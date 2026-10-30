@@ -272,6 +272,30 @@ function update_git_repos() {
 }
 alias ugr='update_git_repos'
 
+# 本体を { } ではなく ( ) にして、中の cd を呼び出し元のシェルに残さない
+function git_prune_local() (
+  cd "$(git worktree list --porcelain | sed -n '1s/^worktree //p')" || exit
+  git fetch --prune || exit
+
+  local default_branch
+  default_branch=$(git symbolic-ref --short refs/remotes/origin/HEAD) || exit
+  default_branch=${default_branch#origin/}
+
+  git switch "$default_branch" || exit
+  git pull || exit
+
+  git worktree prune
+  git worktree list --porcelain | sed -n 's/^worktree //p' | tail -n +2 | while read -r worktree; do
+    git worktree remove "$worktree"
+  done
+  git for-each-ref --format='%(refname:short)' refs/heads | grep -vxF "$default_branch" | while read -r branch; do
+    git branch -D "$branch"
+  done
+
+  mise install
+)
+alias pralias='git_prune_local'
+
 function expo-config() {
   APP_ENV="$1" npx expo config --type public
 }

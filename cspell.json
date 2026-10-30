@@ -83,6 +83,7 @@
     "Pathbar",
     "pixman",
     "poppler",
+    "pralias",
     "quotepath",
     "recents",
     "rerere",
