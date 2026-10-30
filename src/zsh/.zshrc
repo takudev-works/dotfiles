@@ -296,6 +296,15 @@ function git_prune_local() (
 )
 alias pralias='git_prune_local'
 
+function git_prune_local_all() {
+  local git_dir
+  for git_dir in **/.git(N/); do
+    echo "== ${git_dir:h}"
+    (cd "${git_dir:h}" && git_prune_local)
+  done
+}
+alias praliasall='git_prune_local_all'
+
 function expo-config() {
   APP_ENV="$1" npx expo config --type public
 }
