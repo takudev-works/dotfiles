@@ -10,15 +10,15 @@ deno = "2.9.8"
 # パッケージマネージャ
 pnpm = "12.15.0"
 yarn = "1.22.19"
-bun = "1.4.3"
+bun = "1.4.4"
 uv = "0.13.5"
 
 # クラウド
-awscli = "2.38.4"
+awscli = "2.38.5"
 gcloud = "589.0.0"
 terraform = "1.17.0"
 terragrunt = "1.2.0"
-firebase = "15.34.0"
+firebase = "15.34.1"
 
 # 開発
 direnv = "2.38.2"
