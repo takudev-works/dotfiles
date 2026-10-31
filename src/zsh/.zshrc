@@ -240,39 +240,6 @@ function git_switch_branch_with_suffix() {
 }
 alias gscws='git_switch_branch_with_suffix'
 
-function update_git_repos() {
-  local BASE_DIR="$HOME/workspace"
-
-  if [[ ! -d "$BASE_DIR" ]]; then
-    echo "Error: BASE_DIR ($BASE_DIR) does not exist."
-    return 1
-  fi
-
-  for dir in "$BASE_DIR"/*/*/; do
-    if [[ -d "$dir" && -d "$dir/.git" ]]; then
-      echo "Processing: $dir"
-      cd "$dir" || continue
-
-      local DEFAULT_BRANCH
-      DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
-
-      if [[ -n "$DEFAULT_BRANCH" ]]; then
-        echo "Pulling latest changes from $DEFAULT_BRANCH..."
-        git checkout "$DEFAULT_BRANCH" && git pull origin "$DEFAULT_BRANCH"
-      else
-        echo "Warning: Could not determine default branch for $dir"
-      fi
-
-      cd "$BASE_DIR" || return 1
-    else
-      echo "Skipping (not a git repository): $dir"
-    fi
-  done
-
-  echo "All repositories updated."
-}
-alias ugr='update_git_repos'
-
 # 本体を { } ではなく ( ) にして、中の cd を呼び出し元のシェルに残さない
 function git_prune_local() (
   cd "$(git worktree list --porcelain | sed -n '1s/^worktree //p')" || exit
