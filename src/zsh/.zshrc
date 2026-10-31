@@ -276,7 +276,8 @@ alias ugr='update_git_repos'
 # 本体を { } ではなく ( ) にして、中の cd を呼び出し元のシェルに残さない
 function git_prune_local() (
   cd "$(git worktree list --porcelain | sed -n '1s/^worktree //p')" || exit
-  git fetch --prune || exit
+  # followRemoteHEAD を既定の create のままにしないのは、origin/HEAD が無いときに作るだけで、デフォルトブランチの名前が変わっても古いブランチを指したままになるため
+  git -c remote.origin.followRemoteHEAD=always fetch --prune || exit
 
   local default_branch
   default_branch=$(git symbolic-ref --short refs/remotes/origin/HEAD) || exit
