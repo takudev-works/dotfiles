@@ -98,10 +98,11 @@ fi
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
 # 基本
-alias g='git'
+# g・d・tf の値の末尾の空白を消さないのは、値が 1 語だと zsh の alias の出力に引用符が付かず、inshellisense が展開を誤って補完が出ないため
+alias g='git '
 alias galias='git config --get-regexp ^alias\.'
-alias d='docker'
-alias tf='terraform'
+alias d='docker '
+alias tf='terraform '
 alias awsprofile='aws --profile default sts get-caller-identity'
 alias awsprofilelist='aws configure list-profiles'
 
@@ -239,39 +240,6 @@ function git_switch_branch_with_suffix() {
   fi
 }
 alias gscws='git_switch_branch_with_suffix'
-
-function update_git_repos() {
-  local BASE_DIR="$HOME/workspace"
-
-  if [[ ! -d "$BASE_DIR" ]]; then
-    echo "Error: BASE_DIR ($BASE_DIR) does not exist."
-    return 1
-  fi
-
-  for dir in "$BASE_DIR"/*/*/; do
-    if [[ -d "$dir" && -d "$dir/.git" ]]; then
-      echo "Processing: $dir"
-      cd "$dir" || continue
-
-      local DEFAULT_BRANCH
-      DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
-
-      if [[ -n "$DEFAULT_BRANCH" ]]; then
-        echo "Pulling latest changes from $DEFAULT_BRANCH..."
-        git checkout "$DEFAULT_BRANCH" && git pull origin "$DEFAULT_BRANCH"
-      else
-        echo "Warning: Could not determine default branch for $dir"
-      fi
-
-      cd "$BASE_DIR" || return 1
-    else
-      echo "Skipping (not a git repository): $dir"
-    fi
-  done
-
-  echo "All repositories updated."
-}
-alias ugr='update_git_repos'
 
 # 本体を { } ではなく ( ) にして、中の cd を呼び出し元のシェルに残さない
 function git_prune_local() (

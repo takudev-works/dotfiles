@@ -23,6 +23,7 @@ main() {
   run_setup "markdownlint"
   run_setup "cspell"
   run_setup "starship"
+  run_setup "inshellisense"
   run_setup "claude"
   run_setup "zsh"
 
