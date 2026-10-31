@@ -1,5 +1,3 @@
-# Added by Kiro CLI
-case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="${PATH:+$PATH:}$HOME/.local/bin" ;; esac
 setopt incappendhistory
 
 # ===========================
@@ -26,6 +24,9 @@ path=(
   $ANDROID_HOME/platform-tools
   $path
 )
+
+# claude や uv が入る場所
+path=($path $HOME/.local/bin)
 
 # ツールの設定
 export RUST_WITHOUT="rust-docs"
@@ -309,3 +310,9 @@ function expo-config() {
   APP_ENV="$1" npx expo config --type public
 }
 
+# ===========================
+# 補完
+# ===========================
+
+# ほかの設定より前に置かないのは、ここで inshellisense のシェルに切り替わり、元のシェルはこの行より後ろを読まずに終わるため
+[[ -f "$HOME/.local/share/inshellisense/init/zsh/init.zsh" ]] && source "$HOME/.local/share/inshellisense/init/zsh/init.zsh"
