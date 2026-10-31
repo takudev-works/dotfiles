@@ -17,6 +17,7 @@ brew 'git'
 brew 'git-filter-repo'
 
 # シェルとターミナル
+brew 'inshellisense'
 brew 'starship'
 brew 'tmux'
 brew 'zsh-autosuggestions'
@@ -126,7 +127,6 @@ cask 'meetingbar'
 cask 'notion'
 cask 'notion-calendar'
 cask 'raycast'
-cask 'kiro'
 
 # コミュニケーション
 cask 'discord'
