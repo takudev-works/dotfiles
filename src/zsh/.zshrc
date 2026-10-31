@@ -98,10 +98,11 @@ fi
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
 # 基本
-alias g='git'
+# g・d・tf の値の末尾の空白を消さないのは、値が 1 語だと zsh の alias の出力に引用符が付かず、inshellisense が展開を誤って補完が出ないため
+alias g='git '
 alias galias='git config --get-regexp ^alias\.'
-alias d='docker'
-alias tf='terraform'
+alias d='docker '
+alias tf='terraform '
 alias awsprofile='aws --profile default sts get-caller-identity'
 alias awsprofilelist='aws configure list-profiles'
 
