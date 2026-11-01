@@ -6,11 +6,21 @@ THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$THIS_DIR/utils.sh"
 
 main() {
+  if [ "$#" -gt 0 ]; then
+    local module
+    for module in "$@"; do
+      run_setup "$module"
+    done
+    return
+  fi
+
   log "セットアップを始めます"
 
   run_setup "fonts"
   run_setup "xcode"
   run_setup "homebrew"
+  # homebrew の setup.sh が通した PATH に頼らないのは、setup.sh が子プロセスで動き、ここに残らないため
+  load_brew_env
   run_setup "mac"
   run_setup "git"
   run_setup "tmux"
@@ -30,4 +40,4 @@ main() {
   log "セットアップが終わりました"
 }
 
-main
+main "$@"

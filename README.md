@@ -14,7 +14,16 @@ bash init.sh
 
 スクリプトの中で何度か `sudo` を呼ぶので、アカウントのパスワードを聞かれる。nvram とログインウインドウに書く設定は、再起動するまで効かない。
 
-`init.sh` は `src/` の下にあるツールごとの `setup.sh` を順に実行する。1 つだけやり直すときは、その `setup.sh` を直接実行する（例: `bash src/zsh/setup.sh`）。
+`init.sh` は `src/` の下にあるツールごとの `setup.sh` を順に実行する。ツール名を付けると、その `setup.sh` だけを実行する（例: `bash init.sh zsh`）。
+
+mise を入れた後は、どのディレクトリからでも `mise run dotfiles` で `init.sh` を動かせる。タスクは `src/mise/config.toml`（`~/.config/mise/config.toml` にリンクする）にある。
+
+```sh
+mise run dotfiles           # init.sh をすべて実行する
+mise run dotfiles homebrew  # Homebrew と Brewfile のパッケージを入れ、更新する（alias の gm も同じ）
+```
+
+`mise run setup` が入れるのは、この repo の依存と git hook だけ。Mac の設定やツールは入れない。
 
 ## 開発の準備
 
@@ -23,7 +32,7 @@ bash init.sh
 ```sh
 mise install       # mise.toml の版の Node、pnpm、lefthook、actionlint、zizmor、shellcheck を入れる
 mise run setup     # 依存と git hook を入れる
-pnpm run validate  # CI と同じ検査
+mise run validate  # CI と同じ検査
 ```
 
 前もって `mise` を入れておく（入れ方は https://mise.jdx.dev/getting-started.html ）。初めて使う repo では、`mise trust` で `mise.toml` を信頼してから実行する。
@@ -32,7 +41,7 @@ pnpm run validate  # CI と同じ検査
 
 lint の設定は [takudev-works/dev-config](https://github.com/takudev-works/dev-config) を devDependencies として入れて使う。`init.sh` の中で `mise run setup` を実行し、dev-config と git hook を入れる。`src/markdownlint/setup.sh` は、エディタが読めるように dev-config の markdownlint の正本を `~/.config/markdownlint/markdownlint-cli2.mjs` にリンクする。`src/cspell/setup.sh` は、個人の単語の `cspell.json` を `~/.config/cspell` にリンクする。
 
-変更は PR で出し、`Org Requirements`（check の名前は `dev-config / validate`）が通ってから merge する。push の前に `pnpm run validate` を実行する。CI でも同じ検査をする。
+変更は PR で出し、`Org Requirements`（check の名前は `dev-config / validate`）が通ってから merge する。push の前に `mise run validate` を実行する。CI でも同じ検査をする。
 
 ## 手で行う設定
 
@@ -48,6 +57,10 @@ lint の設定は [takudev-works/dev-config](https://github.com/takudev-works/de
 4. **自動入力元** で **1Password** をオンにする。
 
 手順 4 は、`configure_autofill_passwords` が `pluginkit` で拡張機能を有効にする。`init.sh` は `homebrew` の手順で 1Password を入れてから `mac` の手順を実行する。拡張機能が見つからないときは、ログに「1Password の自動入力の拡張機能が無いので飛ばします」と出る。そのときは 1Password を一度起動してから `bash src/mac/setup.sh` を実行し直すか、手順 4 を手で行う。
+
+### Claude Code の hooks
+
+`src/claude/settings.json` の hooks は `~/.config/iterm2/cc-status` を呼ぶ。このリンクは iTerm2 が作るもので、スクリプトでは作らない。リンクが無いうちは hooks が失敗するので、iTerm2 を設定した後に有るかを確かめる。
 
 ### Gatekeeper
 

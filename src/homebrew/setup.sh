@@ -13,15 +13,7 @@ setup_homebrew() {
     log "Homebrew は入っています"
   fi
 
-  local brew_path
-  if [[ "$(uname -m)" == "arm64" ]]; then
-    brew_path="/opt/homebrew/bin/brew"
-  else
-    brew_path="/usr/local/bin/brew"
-  fi
-
-  # ~/.zprofile に書き足さないのは、src/zsh/.zprofile へのリンクで、brew shellenv はそちらに書いてあるため
-  eval "$($brew_path shellenv)"
+  load_brew_env
 }
 
 setup_rosetta() {

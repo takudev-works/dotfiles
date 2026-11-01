@@ -131,9 +131,8 @@ alias ll='ls -la --color=auto'
 alias l.='ls -d .* --color=auto'
 
 # 開発の作業
-alias gm='brew update && brew upgrade && brew cleanup && brew autoremove && brew doctor'
+alias gm='mise run dotfiles homebrew'
 alias cdr='cd $(git rev-parse --show-toplevel)'
-alias saml2awssetup="bash -c 'read -sp \"ClientID: \" client_id && echo && read -sp \"ClientSecret: \" client_secret && echo && saml2aws configure --client-id=\$client_id --client-secret=\$client_secret'"
 alias saml2awslogin='saml2aws login --session-duration 14400 --force --skip-prompt --browser-type=chrome'
 
 # AI

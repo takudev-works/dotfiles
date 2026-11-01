@@ -23,6 +23,11 @@ firebase = "15.34.1"
 # 開発
 direnv = "2.38.2"
 
+[tasks.dotfiles]
+description = "dotfiles の init.sh を動かす。ツール名を付けると、その setup.sh だけを動かす（例: mise run dotfiles homebrew）"
+# dotfiles の場所を書かないのは、このファイルが dotfiles の src/mise/config.toml へのリンクで、リンク先からたどれるため
+run = 'bash "$(dirname "$(readlink -f "$HOME/.config/mise/config.toml")")/../../init.sh"'
+
 [settings]
 legacy_version_file = true
 python.github_attestations = false
