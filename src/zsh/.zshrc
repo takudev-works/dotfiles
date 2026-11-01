@@ -34,7 +34,6 @@ export PATH
 
 # 開発
 export RUBY_DEBUG_DAP_SHOW_PROTOCOL=1
-export AWS_PROFILE="default"
 
 # ===========================
 # zsh のオプション
