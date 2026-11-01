@@ -1,0 +1,17 @@
+name: Dev env review
+
+on:
+  schedule:
+    # 日本時間（毎月 1 日 9:00）で書かないのは、schedule の cron が UTC で動くため
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  dev-env-review:
+    uses: takudev-works/dev-config/.github/workflows/reusable-dev-env-review.yml@a6ca54ea91ee0207872636a23e7b46a1edda73f7 # v9.2.1
+    secrets:
+      ORG_CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.ORG_CLAUDE_CODE_OAUTH_TOKEN }}
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
