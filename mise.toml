@@ -9,3 +9,7 @@ zizmor = "1.31.1"
 [tasks.setup]
 description = "依存と git hook を入れる"
 run = ["pnpm install --frozen-lockfile", "lefthook install"]
+
+[tasks.validate]
+description = "CI と同じ検査をする"
+run = "pnpm run validate"

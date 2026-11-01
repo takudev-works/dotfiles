@@ -34,6 +34,18 @@ link_files() {
   log "$* を $dest_dir にリンクしました"
 }
 
+load_brew_env() {
+  local brew_path
+  if [[ "$(uname -m)" == "arm64" ]]; then
+    brew_path="/opt/homebrew/bin/brew"
+  else
+    brew_path="/usr/local/bin/brew"
+  fi
+
+  # ~/.zprofile に書き足さないのは、src/zsh/.zprofile へのリンクで、brew shellenv はそちらに書いてあるため
+  eval "$($brew_path shellenv)"
+}
+
 restart_app() {
   killall "$1" 2>/dev/null || true
 }

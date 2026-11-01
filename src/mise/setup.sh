@@ -11,4 +11,5 @@ if ! command -v mise >/dev/null 2>&1; then
 fi
 
 link_files "$THIS_DIR" "$HOME/.config/mise" config.toml
-mise install
+# 今いるディレクトリで入れないのは、まだ信頼していない repo の mise.toml を読んで止まるため
+mise --cd "$HOME" install
