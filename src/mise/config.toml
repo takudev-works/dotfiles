@@ -14,7 +14,7 @@ bun = "1.4.4"
 uv = "0.13.5"
 
 # クラウド
-awscli = "2.38.5"
+awscli = "2.38.6"
 gcloud = "589.0.0"
 terraform = "1.17.0"
 terragrunt = "1.2.1"
