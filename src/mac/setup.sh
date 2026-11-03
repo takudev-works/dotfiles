@@ -341,8 +341,8 @@ configure_finder() {
   defaults write com.apple.finder WarnOnEmptyTrash -bool false
   defaults write com.apple.finder FXRemoveOldTrashItems -bool false # 30 日後にゴミ箱から削除する設定を無効化
 
-  # ダウンロードしたアプリの初回警告を無効化
-  defaults write com.apple.LaunchServices LSQuarantine -bool false
+  # false にしないのは、ダウンロードしたアプリを初めて開くときの確認を飛ばさないため
+  defaults write com.apple.LaunchServices LSQuarantine -bool true
 
   # デスクトップに表示するアイテム
   defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
