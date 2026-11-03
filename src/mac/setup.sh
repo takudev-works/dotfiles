@@ -13,7 +13,7 @@ fi
 configure_sound_effects() {
   log "効果音を設定します"
 
-  sudo nvram StartupMute=%01 #起動音をミュート
+  run_as_admin nvram StartupMute=%01 #起動音をミュート
 
   log "効果音を設定しました"
 }
@@ -51,7 +51,7 @@ configure_time() {
 configure_battery() {
   log "バッテリーを設定します"
 
-  sudo pmset -a LowPowerMode 0 # Low Power Modeを無効化
+  run_as_admin pmset -a LowPowerMode 0 # Low Power Modeを無効化
 
   log "バッテリーを設定しました"
 }
@@ -172,7 +172,7 @@ configure_notifications() {
 configure_sound() {
   log "サウンドを設定します"
 
-  sudo nvram SystemAudioVolume="%80"                                                                           # 起動音の音量（ミュート自体は configure_sound_effects の StartupMute で行う）
+  run_as_admin nvram SystemAudioVolume="%80"                                                                   # 起動音の音量（ミュート自体は configure_sound_effects の StartupMute で行う）
   defaults write NSGlobalDomain com.apple.sound.uiaudio.enabled -bool true                                     # UI のサウンドエフェクトを有効化
   defaults write -g com.apple.sound.beep.feedback -bool false                                                  # 音量変更時のフィードバック音を無効化
   defaults write com.apple.systemsound "com.apple.sound.beep.sound" -string "/System/Library/Sounds/Boop.aiff" # 警告音を "Boop" に設定
@@ -193,12 +193,12 @@ configure_lock_screen() {
   log "ロック画面を設定します"
 
   defaults -currentHost write com.apple.screensaver idleTime -int 180 # スクリーンセーバーの開始時間（3 分）
-  sudo pmset -b displaysleep 5                                        # バッテリー使用時のディスプレイオフ時間（5 分）
-  sudo pmset -c displaysleep 5                                        # 電源接続時のディスプレイオフ時間（5 分）
+  run_as_admin pmset -b displaysleep 5                                # バッテリー使用時のディスプレイオフ時間（5 分）
+  run_as_admin pmset -c displaysleep 5                                # 電源接続時のディスプレイオフ時間（5 分）
 
   # ロック画面の表示オプション
-  defaults write com.apple.menuextra.clock IsAnalog -bool false                           # デジタル時計を表示
-  sudo defaults write /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false # ゲストユーザーを無効化
+  defaults write com.apple.menuextra.clock IsAnalog -bool false                                   # デジタル時計を表示
+  run_as_admin defaults write /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false # ゲストユーザーを無効化
 
   log "ロック画面を設定しました"
 }
@@ -214,10 +214,10 @@ configure_security() {
     log "Gatekeeper が無効です。復旧モード（Recovery OS）で有効にしてください"
   fi
 
-  sudo defaults write /Library/Preferences/com.apple.AccessorySecurity "AccessorySecurityPolicy" -int 1 # アクセサリの接続を「新しいアクセサリの接続を確認」に設定
-  sudo defaults write /Library/Preferences/com.apple.security.lockdown "Mode" -bool false               # Lockdown Mode をオフに設定（Lockdown Mode の変更は手動が推奨される）
-  if ! fdesetup status | grep -q "FileVault is On."; then                                               # FileVault を有効化
-    sudo fdesetup enable
+  run_as_admin defaults write /Library/Preferences/com.apple.AccessorySecurity "AccessorySecurityPolicy" -int 1 # アクセサリの接続を「新しいアクセサリの接続を確認」に設定
+  run_as_admin defaults write /Library/Preferences/com.apple.security.lockdown "Mode" -bool false               # Lockdown Mode をオフに設定（Lockdown Mode の変更は手動が推奨される）
+  if ! fdesetup status | grep -q "FileVault is On."; then                                                       # FileVault を有効化
+    run_as_admin fdesetup enable
   else
     log "FileVault は有効なので飛ばします"
   fi

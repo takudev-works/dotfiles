@@ -5,8 +5,15 @@ set -euo pipefail
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$THIS_DIR/../../utils.sh"
 
+DECLINED_CASKS_FILE="$HOME/.config/dotfiles/declined-casks"
+
 setup_homebrew() {
   if ! command -v brew >/dev/null 2>&1; then
+    if is_mdm_mode; then
+      log "エラー: Homebrew が入っていません。MDM モードでは入れないので、先に入れてください"
+      exit 1
+    fi
+
     log "Homebrew を入れます"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
@@ -20,11 +27,116 @@ setup_rosetta() {
   if [[ "$(uname -m)" == "arm64" ]]; then
     log "Rosetta 2 を入れます"
     if ! pkgutil --pkg-info=com.apple.pkg.RosettaUpdateAuto >/dev/null 2>&1; then
-      sudo softwareupdate --install-rosetta --agree-to-license
+      run_as_admin softwareupdate --install-rosetta --agree-to-license
     else
       log "Rosetta 2 は入っています"
     fi
   fi
+}
+
+brewfile_casks() {
+  brew bundle list --cask --file="$THIS_DIR/Brewfile"
+}
+
+run_brew_bundle() {
+  if is_mdm_mode; then
+    # brew bundle で cask を入れないのは、install_casks_interactively で 1 つずつ聞いてから入れるため
+    HOMEBREW_BUNDLE_CASK_SKIP="$(brewfile_casks | tr '\n' ' ')" brew bundle "$@"
+  else
+    brew bundle "$@"
+  fi
+}
+
+cask_apps() {
+  local cask_info=$1
+  local cask=$2
+
+  jq -r --arg token "$cask" '
+    .casks[] | select(.token == $token) | .artifacts[] | .app? // empty | .[]
+    | if type == "object" then .target // empty else . end
+  ' <<<"$cask_info"
+}
+
+is_cask_app_present() {
+  local cask_info=$1
+  local cask=$2
+  local app
+
+  while IFS= read -r app; do
+    app="${app##*/}"
+    if [ -e "/Applications/$app" ] || [ -e "$HOME/Applications/$app" ]; then
+      return 0
+    fi
+  done < <(cask_apps "$cask_info" "$cask")
+
+  return 1
+}
+
+cask_needs_admin() {
+  local cask_info=$1
+  local cask=$2
+
+  jq -e --arg token "$cask" '
+    any(.casks[] | select(.token == $token) | .artifacts[]; type == "object" and (has("pkg") or has("installer")))
+  ' <<<"$cask_info" >/dev/null
+}
+
+install_casks_interactively() {
+  log "入っていないアプリを入れるかを聞きます"
+
+  local casks=()
+  local cask
+  while IFS= read -r cask; do
+    casks+=("$cask")
+  done < <(brewfile_casks)
+
+  local cask_info
+  cask_info="$(brew info --cask --json=v2 "${casks[@]}")"
+
+  local installed
+  installed="$(brew list --cask -1)"
+
+  local app_dir="/Applications"
+  if [ ! -w "$app_dir" ]; then
+    app_dir="$HOME/Applications"
+  fi
+
+  mkdir -p "$(dirname "$DECLINED_CASKS_FILE")"
+  touch "$DECLINED_CASKS_FILE"
+
+  local answer
+  for cask in "${casks[@]}"; do
+    if grep -qxF "$cask" <<<"$installed"; then
+      continue
+    fi
+
+    if is_cask_app_present "$cask_info" "$cask"; then
+      log "$cask は Homebrew の外で入っているので飛ばします"
+      continue
+    fi
+
+    if grep -qxF "$cask" "$DECLINED_CASKS_FILE"; then
+      continue
+    fi
+
+    if cask_needs_admin "$cask_info" "$cask"; then
+      log "$cask はインストーラに管理者権限が要るので飛ばします"
+      continue
+    fi
+
+    if [ ! -t 0 ]; then
+      log "$cask を入れるかを聞けないので飛ばします"
+      continue
+    fi
+
+    read -r -p "$cask を入れますか？ [y/N] " answer || answer=""
+    if [[ "$answer" =~ ^[Yy]$ ]]; then
+      brew install --cask --appdir="$app_dir" "$cask"
+    else
+      echo "$cask" >>"$DECLINED_CASKS_FILE"
+      log "$cask は入れません。聞き直すときは $DECLINED_CASKS_FILE から消してください"
+    fi
+  done
 }
 
 validate_brewfile() {
@@ -34,7 +146,7 @@ validate_brewfile() {
     exit 1
   fi
 
-  if ! brew bundle check --file="$THIS_DIR/Brewfile" --no-upgrade >/dev/null 2>&1; then
+  if ! run_brew_bundle check --file="$THIS_DIR/Brewfile" --no-upgrade >/dev/null 2>&1; then
     log "警告: Brewfile に問題がありそうです"
   else
     log "Brewfile の検査が終わりました"
@@ -55,7 +167,10 @@ maintenance() {
 
   if [ -f "$THIS_DIR/Brewfile" ]; then
     log "Brewfile のパッケージを入れます"
-    brew bundle --file="$THIS_DIR/Brewfile"
+    run_brew_bundle --file="$THIS_DIR/Brewfile"
+    if is_mdm_mode; then
+      install_casks_interactively
+    fi
   else
     log "警告: Brewfile がありません"
   fi
