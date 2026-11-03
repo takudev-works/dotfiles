@@ -72,11 +72,26 @@ maintenance() {
   brew bundle cleanup --file="$THIS_DIR/Brewfile" </dev/null || true
 }
 
+setup_gh() {
+  if ! command -v gh >/dev/null 2>&1; then
+    log "attestation を確かめるための gh を入れます"
+    # gh 自身の attestation を確かめないのは、確かめるには gh で GitHub にログインしている必要があるため
+    HOMEBREW_NO_VERIFY_ATTESTATIONS=1 brew install gh
+  fi
+
+  if ! gh auth status >/dev/null 2>&1; then
+    log "attestation を確かめるために、gh で GitHub にログインします"
+    gh auth login
+  fi
+}
+
 main() {
   log "Homebrew のセットアップを始めます"
 
+  link_files "$THIS_DIR" "$HOME/.homebrew" brew.env
   setup_homebrew
   setup_rosetta
+  setup_gh
   validate_brewfile
   maintenance
 

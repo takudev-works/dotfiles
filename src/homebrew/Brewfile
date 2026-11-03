@@ -5,7 +5,7 @@ cask_args appdir: '/Applications'
 # ====================
 # tap
 # ====================
-tap 'mobile-dev-inc/tap'
+tap 'mobile-dev-inc/tap', trusted: { formula: 'maestro' }
 
 # ====================
 # formula

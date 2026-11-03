@@ -43,6 +43,45 @@ lint の設定は [takudev-works/dev-config](https://github.com/takudev-works/de
 
 変更は PR で出し、`Org Requirements`（check の名前は `dev-config / validate`）が通ってから merge する。push の前に `mise run validate` を実行する。CI でも同じ検査をする。
 
+## Homebrew で入れるパッケージの出どころ
+
+`src/homebrew/setup.sh` は `src/homebrew/brew.env` を `~/.homebrew/brew.env` にリンクする。Homebrew は `brew` を実行するたびにこのファイルを読むので、シェルから実行しても `init.sh` から実行しても同じ設定が効く。
+
+### bottle の attestation
+
+`brew.env` で `HOMEBREW_VERIFY_ATTESTATIONS=1` を設定している。homebrew/core の bottle を入れる前に、Homebrew が `gh` で build provenance attestation（その bottle を Homebrew の CI がどのソースから作ったかの証明）を確かめ、確かめられない bottle は入れない。
+
+確かめるには、`gh` で GitHub にログインしている必要がある。`src/homebrew/setup.sh` は、`gh` が無ければ attestation を確かめずに `gh` を入れ、ログインしていなければ `gh auth login` を実行する。
+
+### 第三者の tap
+
+公式の tap（homebrew/core、homebrew/cask）以外の tap にある formula と cask は、信頼すると明示しない限り Homebrew が読み込まない（Homebrew 6.0.0 からの Tap Trust）。第三者の tap を Brewfile に足すときは、使う formula や cask だけを `trusted:` で信頼する。tap の全体は信頼しない。
+
+```ruby
+tap 'mobile-dev-inc/tap', trusted: { formula: 'maestro' }
+```
+
+`brew trust` でも信頼できるが、Brewfile に書く。`brew bundle cleanup --force` が、信頼の一覧を Brewfile に書いたものだけに戻すため。
+
+`HOMEBREW_ALLOWED_TAPS` は使わない。Homebrew 7 で非推奨になり、代わりのものは無いという警告が `brew` を実行するたびに出るため。
+
+### ハッシュを確かめない cask
+
+次の cask は `sha256 :no_check` で、Homebrew はダウンロードしたファイルのハッシュを確かめない。配布元がダウンロードの URL に版を入れず、同じ URL のファイルを新しい版に置き換えるので、cask にハッシュを書けないため。
+
+- google-chrome
+- google-drive
+- google-gemini
+- google-japanese-ime
+- miro
+- spotify
+
+一覧は次のコマンドで確かめる。
+
+```sh
+brew info --cask --json=v2 $(brew bundle list --cask --file=src/homebrew/Brewfile) | jq -r '.casks[] | select(.sha256 == "no_check") | .token'
+```
+
 ## 手で行う設定
 
 `src/mac/setup.sh` は、`defaults`、`pmset`、`nvram`、`pluginkit` で変えられる設定を扱う。それ以外の次の項目は手で行う。
