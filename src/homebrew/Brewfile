@@ -5,7 +5,7 @@ cask_args appdir: '/Applications'
 # ====================
 # tap
 # ====================
-tap 'mobile-dev-inc/tap'
+tap 'mobile-dev-inc/tap', trusted: { formula: 'maestro' }
 
 # ====================
 # formula
@@ -165,5 +165,6 @@ cask 'spotify'
 
 # AI
 cask 'claude'
+cask 'claude-code'
 cask 'cursor'
 cask 'google-gemini'
