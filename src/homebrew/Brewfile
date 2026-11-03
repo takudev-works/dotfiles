@@ -165,5 +165,6 @@ cask 'spotify'
 
 # AI
 cask 'claude'
+cask 'claude-code'
 cask 'cursor'
 cask 'google-gemini'

@@ -25,7 +25,7 @@ path=(
   $path
 )
 
-# claude や uv が入る場所
+# uv が入る場所
 path=($path $HOME/.local/bin)
 
 # ツールの設定
@@ -135,7 +135,7 @@ alias cdr='cd $(git rev-parse --show-toplevel)'
 alias saml2awslogin='saml2aws login --session-duration 14400 --force --skip-prompt --browser-type=chrome'
 
 # AI
-alias c='~/.local/bin/claude'
+alias c='/opt/homebrew/bin/claude'
 
 # 手元だけの関数
 [[ -f ~/.zsh_functions ]] && source ~/.zsh_functions

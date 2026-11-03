@@ -8,7 +8,7 @@ source "$THIS_DIR/../../utils.sh"
 setup_homebrew() {
   if ! command -v brew >/dev/null 2>&1; then
     log "Homebrew を入れます"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    install_homebrew_pkg
   else
     log "Homebrew は入っています"
   fi
@@ -83,6 +83,35 @@ setup_gh() {
     log "attestation を確かめるために、gh で GitHub にログインします"
     gh auth login
   fi
+}
+
+install_homebrew_pkg() {
+  if [[ "$(uname -m)" != "arm64" ]]; then
+    log "エラー: Homebrew の .pkg は Apple Silicon の Mac 向けにしか無いので、https://brew.sh の手順で手で入れてください"
+    exit 1
+  fi
+
+  local team_id="927JGANW46"
+  local pkg_dir
+  pkg_dir="$(mktemp -d)"
+  local pkg="$pkg_dir/Homebrew.pkg"
+
+  # install.sh を使わないのは、取った中身を確かめる手段が無いため
+  curl -fsSL -o "$pkg" https://github.com/Homebrew/brew/releases/latest/download/Homebrew.pkg
+
+  # 署名があるかだけで済ませないのは、Apple が発行した Developer ID なら誰の署名でも通るため
+  if ! pkgutil --check-signature "$pkg" | grep -qE "^ *1\. Developer ID Installer: .+ \($team_id\)$"; then
+    log "エラー: Homebrew.pkg の署名が Homebrew の Team ID（$team_id）のものではありません"
+    exit 1
+  fi
+
+  if ! spctl --assess --type install "$pkg" >/dev/null 2>&1; then
+    log "エラー: Homebrew.pkg が Apple の公証（notarization）を通っていません"
+    exit 1
+  fi
+
+  sudo installer -pkg "$pkg" -target /
+  rm -rf "$pkg_dir"
 }
 
 main() {

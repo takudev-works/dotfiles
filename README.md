@@ -45,6 +45,32 @@ lint の設定は [takudev-works/dev-config](https://github.com/takudev-works/de
 
 ## Homebrew で入れるパッケージの出どころ
 
+取ったスクリプトを中身を確かめずに実行する入れ方（`curl ... | bash`）はしない。
+
+### Homebrew 本体
+
+Homebrew が入っていなければ、`src/homebrew/setup.sh` は Homebrew/brew の最新の GitHub Release にある `Homebrew.pkg` を取り、次の 2 つを確かめてから `sudo installer` で入れる。
+
+- `pkgutil --check-signature` で、署名が Homebrew の Developer ID Installer（Team ID `927JGANW46`）のものであること
+- `spctl --assess --type install` で、Apple の公証（notarization）を通っていること
+
+版は固定しない。出どころは署名で確かめられ、入れた後は `brew update` が最新の版に上げるため。
+
+Homebrew の `.pkg` は Apple Silicon 向けしか無い。Intel の Mac ではスクリプトが止まる。そのときは https://brew.sh の手順に従い、手で入れる。
+
+### Claude Code
+
+Claude Code は Brewfile の cask `claude-code` で入れ、`/opt/homebrew/bin/claude` に置く。ほかの cask と同じく、Homebrew がダウンロードしたもののハッシュを確かめる。更新は `brew upgrade` で行う。
+
+`curl -fsSL https://claude.ai/install.sh | bash` で入れたマシンでは、`~/.local/bin/claude` と `~/.local/share/claude` が残る。`.zshrc` の `c` は `/opt/homebrew/bin/claude` を指すので、残ったものは手で消す。
+
+```sh
+rm -f ~/.local/bin/claude
+rm -rf ~/.local/share/claude
+```
+
+### brew.env
+
 `src/homebrew/setup.sh` は `src/homebrew/brew.env` を `~/.homebrew/brew.env` にリンクする。Homebrew は `brew` を実行するたびにこのファイルを読むので、シェルから実行しても `init.sh` から実行しても同じ設定が効く。
 
 ### bottle の attestation
