@@ -25,6 +25,27 @@ mise run dotfiles homebrew  # Homebrew と Brewfile のパッケージを入れ�
 
 `mise run setup` が入れるのは、この repo の依存と git hook だけ。Mac の設定やツールは入れない。
 
+### MDM で管理された Mac で実行する
+
+会社の MDM で管理された Mac では、MDM モードで実行する。Homebrew は先に入れておく。MDM モードでは Homebrew を入れない。
+
+```sh
+bash init.sh --mdm                   # init.sh をすべて MDM モードで実行する
+bash init.sh --mdm homebrew          # ツール名も付けられる
+DOTFILES_MDM=1 mise run dotfiles     # mise から実行するときは環境変数で指定する
+```
+
+MDM モードでは次のように動く。
+
+- `sudo` を使う設定（`nvram`、`pmset`、`/Library/Preferences` への書き込み、FileVault、Rosetta 2）は飛ばし、飛ばしたコマンドをログに出す
+- Brewfile の formula は今までどおりすべて入れる
+- Brewfile の cask は、入っていないものだけを 1 つずつ、入れるかを聞く。次のものは聞かずに飛ばす
+  - Homebrew で入れたもの
+  - 同じ名前のアプリが `/Applications` か `~/Applications` にあるもの（MDM が入れたものを含む）
+  - インストーラ（pkg）に管理者権限が要るもの
+- `/Applications` に書けないときは、cask を `~/Applications` に入れる
+- 「入れない」と答えた cask は `~/.config/dotfiles/declined-casks` に書き、次からは聞かない。聞き直すときは、このファイルからその行を消す
+
 ## 開発の準備
 
 手元では次の順に実行する。`init.sh` を実行したあとなら、最初の 2 つは済んでいる。

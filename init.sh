@@ -6,6 +6,15 @@ THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$THIS_DIR/utils.sh"
 
 main() {
+  if [ "${1:-}" = "--mdm" ]; then
+    export DOTFILES_MDM=1
+    shift
+  fi
+
+  if is_mdm_mode; then
+    log "MDM モードで実行します。管理者権限が要る設定は飛ばし、入っていないアプリは入れるかを聞きます"
+  fi
+
   if [ "$#" -gt 0 ]; then
     local module
     for module in "$@"; do

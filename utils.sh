@@ -46,6 +46,19 @@ load_brew_env() {
   eval "$($brew_path shellenv)"
 }
 
+is_mdm_mode() {
+  [ "${DOTFILES_MDM:-}" = "1" ]
+}
+
+run_as_admin() {
+  if is_mdm_mode; then
+    log "管理者権限が要るので飛ばします: $*"
+    return 0
+  fi
+
+  sudo "$@"
+}
+
 restart_app() {
   killall "$1" 2>/dev/null || true
 }
