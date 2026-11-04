@@ -8,6 +8,6 @@ on:
 
 jobs:
   dev-config:
-    uses: takudev-works/dev-config/.github/workflows/reusable-validate.yml@78ce818769db190fbddc2da09081385f757d0934 # v9.2.2
+    uses: takudev-works/dev-config/.github/workflows/reusable-validate.yml@324e1cfcc7800e5d4dd541d0ad539aed7acd3e44 # v9.2.3
     permissions:
       contents: read
