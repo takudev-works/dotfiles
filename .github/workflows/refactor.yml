@@ -8,7 +8,7 @@ on:
 
 jobs:
   refactor:
-    uses: takudev-works/dev-config/.github/workflows/reusable-refactor.yml@324e1cfcc7800e5d4dd541d0ad539aed7acd3e44 # v9.2.3
+    uses: takudev-works/dev-config/.github/workflows/reusable-refactor.yml@8ead10d4a9f2d9cda547d4127932744226fd3f3e # v9.2.4
     secrets:
       ORG_CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.ORG_CLAUDE_CODE_OAUTH_TOKEN }}
     permissions:
