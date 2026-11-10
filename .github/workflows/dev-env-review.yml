@@ -8,7 +8,7 @@ on:
 
 jobs:
   dev-env-review:
-    uses: takudev-works/dev-config/.github/workflows/reusable-dev-env-review.yml@f041605561352f0144d737d82483f7d752681545 # v9.2.5
+    uses: takudev-works/dev-config/.github/workflows/reusable-dev-env-review.yml@3245ccdad73cbeaa800085fc3dd2ddb7e1ffc3c9 # v9.2.6
     secrets:
       ORG_CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.ORG_CLAUDE_CODE_OAUTH_TOKEN }}
     permissions:
