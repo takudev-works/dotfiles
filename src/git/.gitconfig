@@ -1,7 +1,3 @@
-[user]
-name = Takuya Iwashiro
-email = takuya.iwashiro@takudev.net
-
 [core]
 excludesfile = ~/.gitignore_global
 ignorecase = false
@@ -72,3 +68,7 @@ conflictstyle = diff3
 
 [rerere]
 enabled = true
+
+# user をこのファイルに書かないのは、マシンごとに使うユーザーが違うため。src/git/setup.sh が環境変数から書く
+[include]
+path = ~/.gitconfig.local

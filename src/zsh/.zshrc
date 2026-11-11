@@ -130,7 +130,9 @@ alias ll='ls -la --color=auto'
 alias l.='ls -d .* --color=auto'
 
 # 開発の作業
-alias gm='mise run dotfiles homebrew'
+function gm {
+  mise run dotfiles "$@" homebrew
+}
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias saml2awslogin='saml2aws login --session-duration 14400 --force --skip-prompt --browser-type=chrome'
 
