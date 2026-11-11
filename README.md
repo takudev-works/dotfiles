@@ -20,8 +20,10 @@ mise を入れた後は、どのディレクトリからでも `mise run dotfile
 
 ```sh
 mise run dotfiles           # init.sh をすべて実行する
-mise run dotfiles homebrew  # Homebrew と Brewfile のパッケージを入れ、更新する（alias の gm も同じ）
+mise run dotfiles homebrew  # Homebrew と Brewfile のパッケージを入れ、更新する（関数の gm も同じ）
 ```
+
+`gm` に付けた引数は `homebrew` の前に渡る。`gm --mdm` は `mise run dotfiles --mdm homebrew` を実行する。
 
 `mise run setup` が入れるのは、この repo の依存と git hook だけ。Mac の設定やツールは入れない。
 
@@ -32,19 +34,36 @@ mise run dotfiles homebrew  # Homebrew と Brewfile のパッケージを入れ�
 ```sh
 bash init.sh --mdm                   # init.sh をすべて MDM モードで実行する
 bash init.sh --mdm homebrew          # ツール名も付けられる
-DOTFILES_MDM=1 mise run dotfiles     # mise から実行するときは環境変数で指定する
+mise run dotfiles --mdm homebrew     # mise から実行するときも同じ
+gm --mdm                             # Homebrew だけを MDM モードで実行する
 ```
 
 MDM モードでは次のように動く。
 
 - `sudo` を使う設定（`nvram`、`pmset`、`/Library/Preferences` への書き込み、FileVault、Rosetta 2）は飛ばし、飛ばしたコマンドをログに出す
-- Brewfile の formula は今までどおりすべて入れる
+- Brewfile の formula は、入っていないものだけを 1 つずつ、入れるかを聞く
 - Brewfile の cask は、入っていないものだけを 1 つずつ、入れるかを聞く。次のものは聞かずに飛ばす
   - Homebrew で入れたもの
   - 同じ名前のアプリが `/Applications` か `~/Applications` にあるもの（MDM が入れたものを含む）
   - インストーラ（pkg）に管理者権限が要るもの
 - `/Applications` に書けないときは、cask を `~/Applications` に入れる
-- 「入れない」と答えた cask は `~/.config/dotfiles/declined-casks` に書き、次からは聞かない。聞き直すときは、このファイルからその行を消す
+- 「入れない」と答えた formula は `~/.config/dotfiles/declined-formulae` に、cask は `~/.config/dotfiles/declined-casks` に書き、次からは聞かない。聞き直すときは、このファイルからその行を消す
+- 入れるかを聞けないとき（標準入力が端末でないとき）は、formula と cask を入れずに飛ばす
+
+### git のユーザー
+
+`src/git/.gitconfig` には `user.name` と `user.email` を書かず、`~/.gitconfig.local` を include する。マシンごとに使うユーザーが違うため。
+
+`src/git/setup.sh` は、次の環境変数から `~/.gitconfig.local` に書く。
+
+| 環境変数                  | 書く先       | 環境変数が無いとき                                                                       |
+| ------------------------- | ------------ | ---------------------------------------------------------------------------------------- |
+| `DOTFILES_GIT_USER_NAME`  | `user.name`  | `~/.gitconfig.local` にあればそのまま。無ければ `Takuya Iwashiro`                        |
+| `DOTFILES_GIT_USER_EMAIL` | `user.email` | `~/.gitconfig.local` にあればそのまま。無ければ `takuya.iwashiro@takudev.net`            |
+
+```sh
+DOTFILES_GIT_USER_EMAIL=name@example.com mise run dotfiles git
+```
 
 ## 開発の準備
 

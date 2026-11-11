@@ -5,6 +5,7 @@ set -euo pipefail
 THIS_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$THIS_DIR/../../utils.sh"
 
+DECLINED_FORMULAE_FILE="$HOME/.config/dotfiles/declined-formulae"
 DECLINED_CASKS_FILE="$HOME/.config/dotfiles/declined-casks"
 
 setup_homebrew() {
@@ -34,17 +35,73 @@ setup_rosetta() {
   fi
 }
 
+brewfile_formulae() {
+  brew bundle list --formula --file="$THIS_DIR/Brewfile"
+}
+
 brewfile_casks() {
   brew bundle list --cask --file="$THIS_DIR/Brewfile"
 }
 
 run_brew_bundle() {
   if is_mdm_mode; then
-    # brew bundle で cask を入れないのは、install_casks_interactively で 1 つずつ聞いてから入れるため
-    HOMEBREW_BUNDLE_CASK_SKIP="$(brewfile_casks | tr '\n' ' ')" brew bundle "$@"
+    # brew bundle で formula と cask を入れないのは、install_formulae_interactively と install_casks_interactively で 1 つずつ聞いてから入れるため
+    HOMEBREW_BUNDLE_BREW_SKIP="$(brewfile_formulae | tr '\n' ' ')" \
+      HOMEBREW_BUNDLE_CASK_SKIP="$(brewfile_casks | tr '\n' ' ')" \
+      brew bundle "$@"
   else
     brew bundle "$@"
   fi
+}
+
+ask_to_install() {
+  local name=$1
+  local declined_file=$2
+  local answer
+
+  mkdir -p "$(dirname "$declined_file")"
+  touch "$declined_file"
+
+  if grep -qxF "$name" "$declined_file"; then
+    return 1
+  fi
+
+  if [ ! -t 0 ]; then
+    log "$name を入れるかを聞けないので飛ばします"
+    return 1
+  fi
+
+  read -r -p "$name を入れますか？ [y/N] " answer || answer=""
+  if [[ "$answer" =~ ^[Yy]$ ]]; then
+    return 0
+  fi
+
+  echo "$name" >>"$declined_file"
+  log "$name は入れません。聞き直すときは $declined_file から消してください"
+  return 1
+}
+
+install_formulae_interactively() {
+  log "入っていない formula を入れるかを聞きます"
+
+  local installed
+  installed="$(brew list --formula -1)"
+
+  local formula
+  local formulae=()
+  while IFS= read -r formula; do
+    formulae+=("$formula")
+  done < <(brewfile_formulae)
+
+  for formula in "${formulae[@]}"; do
+    if grep -qxF "$formula" <<<"$installed"; then
+      continue
+    fi
+
+    if ask_to_install "$formula" "$DECLINED_FORMULAE_FILE"; then
+      brew install --formula "$formula"
+    fi
+  done
 }
 
 cask_apps() {
@@ -101,10 +158,6 @@ install_casks_interactively() {
     app_dir="$HOME/Applications"
   fi
 
-  mkdir -p "$(dirname "$DECLINED_CASKS_FILE")"
-  touch "$DECLINED_CASKS_FILE"
-
-  local answer
   for cask in "${casks[@]}"; do
     if grep -qxF "$cask" <<<"$installed"; then
       continue
@@ -115,26 +168,13 @@ install_casks_interactively() {
       continue
     fi
 
-    if grep -qxF "$cask" "$DECLINED_CASKS_FILE"; then
-      continue
-    fi
-
     if cask_needs_admin "$cask_info" "$cask"; then
       log "$cask はインストーラに管理者権限が要るので飛ばします"
       continue
     fi
 
-    if [ ! -t 0 ]; then
-      log "$cask を入れるかを聞けないので飛ばします"
-      continue
-    fi
-
-    read -r -p "$cask を入れますか？ [y/N] " answer || answer=""
-    if [[ "$answer" =~ ^[Yy]$ ]]; then
+    if ask_to_install "$cask" "$DECLINED_CASKS_FILE"; then
       brew install --cask --appdir="$app_dir" "$cask"
-    else
-      echo "$cask" >>"$DECLINED_CASKS_FILE"
-      log "$cask は入れません。聞き直すときは $DECLINED_CASKS_FILE から消してください"
     fi
   done
 }
@@ -169,6 +209,7 @@ maintenance() {
     log "Brewfile のパッケージを入れます"
     run_brew_bundle --file="$THIS_DIR/Brewfile"
     if is_mdm_mode; then
+      install_formulae_interactively
       install_casks_interactively
     fi
   else
