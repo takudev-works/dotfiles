@@ -176,8 +176,8 @@ importers:
   .:
     devDependencies:
       '@takudev-works/dev-config':
-        specifier: github:takudev-works/dev-config#v9.2.7
-        version: https://codeload.github.com/takudev-works/dev-config/tar.gz/afa2aa09de5dcd39b56216fe1c6ea87bb8502e5f(@types/node@24.19.2)(conventional-commits-parser@7.1.4)(jiti@2.7.0)(supports-color@10.2.2)(vite@8.3.6(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
+        specifier: github:takudev-works/dev-config#v9.2.8
+        version: https://codeload.github.com/takudev-works/dev-config/tar.gz/4c4b38542b75cdd3a3739334f4744ef7554a89b6(@types/node@24.19.2)(conventional-commits-parser@7.1.4)(jiti@2.7.0)(supports-color@10.2.2)(vite@8.3.6(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
 
 packages:
 
@@ -814,9 +814,9 @@ packages:
     resolution: {integrity: sha512-ZXfg7MT3AT9ZOq/hgzbqNc01zVPG+PFkr+kbB2OHlMcNrtvK10ZPkNgy38MqTErjNeajh4VG1sSSv5zIyjOXxg==}
     engines: {node: '>=22.18.0'}
 
-  '@takudev-works/dev-config@https://codeload.github.com/takudev-works/dev-config/tar.gz/afa2aa09de5dcd39b56216fe1c6ea87bb8502e5f':
-    resolution: {gitHosted: true, integrity: sha512-FkV+koijvwlsqeHWo/qgST/v2YIT9TlTLr6RqySW2opf/4i7ng9PpBwJHhDWpesTQ8Xv4dwtR4yvGLF+JyeQjw==, tarball: https://codeload.github.com/takudev-works/dev-config/tar.gz/afa2aa09de5dcd39b56216fe1c6ea87bb8502e5f}
-    version: 9.2.7
+  '@takudev-works/dev-config@https://codeload.github.com/takudev-works/dev-config/tar.gz/4c4b38542b75cdd3a3739334f4744ef7554a89b6':
+    resolution: {gitHosted: true, integrity: sha512-WOnjbwRREd0oUjahy35JDRxsAkqiUbXcMVQ9+9xgs3ZefitzaYK0/CL2RsNYUHEOAzQ1Z72rRwJxOLrr7yzqdg==, tarball: https://codeload.github.com/takudev-works/dev-config/tar.gz/4c4b38542b75cdd3a3739334f4744ef7554a89b6}
+    version: 9.2.8
     hasBin: true
 
   '@textlint-rule/textlint-rule-no-invalid-control-character@3.0.0':
@@ -4060,7 +4060,7 @@ snapshots:
 
   '@streetsidesoftware/unindent@1.0.1': {}
 
-  '@takudev-works/dev-config@https://codeload.github.com/takudev-works/dev-config/tar.gz/afa2aa09de5dcd39b56216fe1c6ea87bb8502e5f(@types/node@24.19.2)(conventional-commits-parser@7.1.4)(jiti@2.7.0)(supports-color@10.2.2)(vite@8.3.6(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@takudev-works/dev-config@https://codeload.github.com/takudev-works/dev-config/tar.gz/4c4b38542b75cdd3a3739334f4744ef7554a89b6(@types/node@24.19.2)(conventional-commits-parser@7.1.4)(jiti@2.7.0)(supports-color@10.2.2)(vite@8.3.6(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@commitlint/cli': 21.2.4(conventional-commits-parser@7.1.4)(typescript@6.0.3)
       '@commitlint/config-conventional': 21.2.4
