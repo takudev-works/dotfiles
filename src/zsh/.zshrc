@@ -59,6 +59,8 @@ fi
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=($HOME/.docker/completions $fpath)
+autoload -Uz compinit
+(( ${+_comps[docker]} )) || compinit
 # End of Docker CLI completions
 
 autoload -Uz compinit
@@ -284,7 +286,7 @@ function expo-config() {
 # ===========================
 
 # ほかの設定より前に置かないのは、ここで inshellisense のシェルに切り替わり、元のシェルはこの行より後ろを読まずに終わるため
-if [[ -z "$ISTERM" && -o interactive ]] && command -v is &>/dev/null; then
+if [[ -z "$ISTERM" && -z "$VSCODE_RESOLVING_ENVIRONMENT" && -o interactive ]] && command -v is &>/dev/null; then
   is -s zsh && exit
   echo "inshellisense が使えないか、異常終了したため、素の zsh で続けます" >&2
 fi
