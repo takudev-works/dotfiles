@@ -136,3 +136,5 @@ google-services.json
 *.hprof
 
 **/.claude/settings.local.json
+
+**/.claude/.cc-writes/
